@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  root: '.', // Ensure Vite starts from root
+  root: '.', // optional but harmless
   build: {
     outDir: 'dist',
     emptyOutDir: true,
