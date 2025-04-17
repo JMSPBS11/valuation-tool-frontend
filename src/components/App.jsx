@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const App = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedOEM, setSelectedOEM] = useState('Nissan');
   const [fields, setFields] = useState({});
   const [message, setMessage] = useState('');
+  const dropRef = useRef();
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -16,7 +17,7 @@ const App = () => {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      setMessage('Please select a file first.');
+      setMessage('Please select or drag a file first.');
       return;
     }
 
@@ -38,6 +39,25 @@ const App = () => {
     }
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    dropRef.current.style.border = '2px dashed green';
+  };
+
+  const handleDragLeave = () => {
+    dropRef.current.style.border = '2px dashed #ccc';
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setMessage(`Selected file: ${file.name}`);
+      dropRef.current.style.border = '2px dashed #ccc';
+    }
+  };
+
   return (
     <div style={{ padding: '2rem', fontFamily: 'Arial' }}>
       <h1>Dealership Valuation Tool</h1>
@@ -52,10 +72,25 @@ const App = () => {
         </select>
       </label>
 
-      <div style={{ marginTop: '1rem' }}>
+      <div
+        ref={dropRef}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        style={{
+          marginTop: '1rem',
+          padding: '2rem',
+          border: '2px dashed #ccc',
+          borderRadius: '6px',
+          background: '#f9f9f9',
+          textAlign: 'center',
+        }}
+      >
+        <p>Drag & drop a file here, or click to select:</p>
         <input type="file" onChange={handleFileChange} />
-        <button onClick={handleUpload} style={{ marginLeft: '1rem' }}>Upload</button>
       </div>
+
+      <button onClick={handleUpload} style={{ marginTop: '1rem' }}>Upload</button>
 
       <p style={{ marginTop: '1rem' }}>{message}</p>
 
