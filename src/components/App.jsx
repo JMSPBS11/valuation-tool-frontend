@@ -19,7 +19,7 @@ const App = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch(import.meta.env.VITE_API_BASE_URL + '/upload', {
+      const response = await fetch('https://valuation-tool-backend.onrender.com/upload', {
         method: 'POST',
         body: formData
       });
