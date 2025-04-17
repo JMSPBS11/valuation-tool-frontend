@@ -1,15 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  root: '.', // root of your project
+  root: '.', // Ensure Vite starts from root
   build: {
-    rollupOptions: {
-      input: path.resolve(__dirname, 'public/index.html')
-    },
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
   }
 })
